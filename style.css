@@ -1,0 +1,195 @@
+/* Predictable sizing */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: #f4f6f8;
+  color: #222;
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.5;
+}
+
+/* Header */
+header {
+  padding: 24px 16px;
+  background-color: #8e0000;
+  color: white;
+  text-align: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
+/* Main column and sections */
+main {
+  max-width: 700px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+section {
+  padding: 20px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+section h2 {
+  margin-top: 0;
+}
+
+/* Form layout */
+#note-form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.form-field {
+  min-width: 0;
+}
+
+.form-field:first-child {
+  flex: 1;
+}
+
+label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: bold;
+}
+
+input,
+select {
+  width: 100%;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid #777;
+  border-radius: 6px;
+  background-color: white;
+  color: #222;
+  font: inherit;
+}
+
+/* Buttons */
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  background-color: #087f68;
+  color: white;
+  font: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #065f4e;
+}
+
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 2px solid #1555b6;
+  outline-offset: 3px;
+}
+
+/* Validation errors */
+#error-message {
+  color: #b00020;
+  font-weight: bold;
+}
+
+/* Note cards */
+#notes-list {
+  list-style: none;
+  padding: 0;
+}
+
+.note {
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid #ddd;
+  border-left: 5px solid #777;
+  border-radius: 8px;
+  background-color: #fafafa;
+}
+
+.note-text {
+  margin: 0 0 8px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.note-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.category-label {
+  padding: 2px 8px;
+  border-radius: 4px;
+  background-color: #e8e8e8;
+  font-weight: bold;
+}
+
+.category-personal {
+  border-left-color: #087f68;
+}
+
+.category-work {
+  border-left-color: #8e0000;
+}
+
+.category-study {
+  border-left-color: #1555b6;
+}
+
+.delete-btn {
+  padding: 6px 12px;
+  background-color: #8e0000;
+  font-size: 0.85rem;
+}
+
+.delete-btn:hover {
+  background-color: #650000;
+}
+
+/* Footer */
+footer {
+  padding: 16px;
+  color: #666;
+  text-align: center;
+}
+
+/* Phone layout */
+@media (max-width: 600px) {
+  #note-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .form-field:first-child {
+    flex: auto;
+  }
+
+  section {
+    padding: 16px;
+  }
+
+  header {
+    padding: 16px;
+  }
+}
