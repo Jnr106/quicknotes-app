@@ -7,15 +7,38 @@ const list = document.querySelector("#notes-list");
 const count = document.querySelector("#note-count");
 const errorMessage = document.querySelector("#error-message");
 
-// Store notes in memory
-let notes = [];
+// Load this project's saved notes
+const STORAGE_KEY = "quicknotes-app-notes";
+let notes = loadNotes();
+
+// Continue IDs from the highest saved ID
 let nextId = 1;
 
-// Build the notes list from the array
+for (const note of notes) {
+  if (note.id >= nextId) {
+    nextId = note.id + 1;
+  }
+}
+
+function loadNotes() {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  return saved ? JSON.parse(saved) : [];
+}
+
+function saveNotes() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+}
+
+// Rebuild the visible list from the notes array
 function render() {
   list.replaceChildren();
 
-  notes.forEach((note) => {
+  const searchText = searchInput.value.trim().toLowerCase();
+  const visibleNotes = notes.filter((note) =>
+    note.text.toLowerCase().includes(searchText)
+  );
+
+  visibleNotes.forEach((note) => {
     const li = document.createElement("li");
     li.classList.add("note", `category-${note.category}`);
 
@@ -48,9 +71,14 @@ function render() {
     li.appendChild(text);
     li.appendChild(meta);
     li.appendChild(deleteButton);
-
     list.appendChild(li);
   });
+
+  if (searchText !== "" && visibleNotes.length === 0) {
+    const message = document.createElement("li");
+    message.textContent = "No notes match your search.";
+    list.appendChild(message);
+  }
 
   if (notes.length === 0) {
     count.textContent = "You have no notes yet.";
@@ -61,13 +89,14 @@ function render() {
   }
 }
 
-// Delete only the note with the matching ID
+// Delete, save, and redraw
 function deleteNote(id) {
   notes = notes.filter((note) => note.id !== id);
+  saveNotes();
   render();
 }
 
-// Validate and add a note
+// Validate, add, save, and redraw
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -92,6 +121,8 @@ form.addEventListener("submit", (event) => {
 
   nextId += 1;
   notes.push(note);
+  saveNotes();
+
   errorMessage.textContent = "";
   render();
 
@@ -99,5 +130,8 @@ form.addEventListener("submit", (event) => {
   input.focus();
 });
 
-// Draw the initial empty list and count
+// Filter the displayed notes as the user types
+searchInput.addEventListener("input", render);
+
+// Display saved notes when the page loads
 render();
