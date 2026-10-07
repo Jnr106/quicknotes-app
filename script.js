@@ -38,6 +38,9 @@ function render() {
     deleteButton.type = "button";
     deleteButton.classList.add("delete-btn");
     deleteButton.textContent = "Delete";
+    deleteButton.addEventListener("click", () => {
+      deleteNote(note.id);
+    });
 
     meta.appendChild(categoryLabel);
     meta.appendChild(date);
@@ -48,26 +51,53 @@ function render() {
 
     list.appendChild(li);
   });
+
+  if (notes.length === 0) {
+    count.textContent = "You have no notes yet.";
+  } else if (notes.length === 1) {
+    count.textContent = "You have 1 note.";
+  } else {
+    count.textContent = `You have ${notes.length} notes.`;
+  }
 }
 
-// Add a note when the form is submitted
+// Delete only the note with the matching ID
+function deleteNote(id) {
+  notes = notes.filter((note) => note.id !== id);
+  render();
+}
+
+// Validate and add a note
 form.addEventListener("submit", (event) => {
   event.preventDefault();
 
+  const text = input.value.trim();
+
+  if (text === "") {
+    errorMessage.textContent = "Please type a note first.";
+    return;
+  }
+
+  if (text.length > 200) {
+    errorMessage.textContent = "Notes must be 200 characters or fewer.";
+    return;
+  }
+
   const note = {
     id: nextId,
-    text: input.value.trim(),
+    text: text,
     category: categorySelect.value,
     createdAt: new Date().toLocaleString(),
   };
 
   nextId += 1;
   notes.push(note);
+  errorMessage.textContent = "";
   render();
 
   input.value = "";
   input.focus();
 });
 
-// Draw the initial empty list
+// Draw the initial empty list and count
 render();
